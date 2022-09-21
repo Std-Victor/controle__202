@@ -20,10 +20,18 @@ export default class App extends Component {
   componentDidMount() {
     fetch("https://jsonplaceholder.typicode.com/users")
       .then((response) => response.json())
-      .then((json) => this.setState({ users: json }));
+      .then((json) =>
+        this.setState({
+          users: json,
+          lastUseId: json[json.length - 1].id,
+        })
+      );
   }
 
-  handleChange = (e) => this.setState({ searchField: e.target.value });
+  handleChange = (e) =>
+    this.setState({
+      searchField: e.target.value,
+    });
 
   editById = (user) =>
     this.setState({ editUser: user, openModal: true, edit: true });
@@ -31,22 +39,25 @@ export default class App extends Component {
   removeById = (id) =>
     this.setState({ deleteUseId: [id, ...this.state.deleteUseId] });
   getData = (data) => {
-    data.id = this.state.lastUseId + 1;
     const oldUserId = this.state.users.findIndex(
       (user) => user.id === this.state.editUser.id
     );
     if (oldUserId >= 0) {
       const oldData = this.state.users;
+      data.id = this.state.editUser.id;
       oldData[oldUserId] = data;
       return this.setState({
         users: oldData,
         openModal: false,
       });
+    } else {
+      data.id = this.state.lastUseId + 1;
+      return this.setState({
+        users: [...this.state.users, data],
+        openModal: false,
+        lastUseId: data.id,
+      });
     }
-    return this.setState({
-      users: [...this.state.users, data],
-      openModal: false,
-    });
   };
 
   render() {
@@ -71,7 +82,6 @@ export default class App extends Component {
             onClick={() =>
               this.setState({
                 openModal: true,
-                lastUseId: this.state.users[this.state.users.length - 1].id,
                 editUser: "",
               })
             }

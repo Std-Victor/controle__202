@@ -15,14 +15,14 @@ export const View = ({ filteredStd, editById, removeById }) => {
       <thead>
         <tr>
           {Object.keys(keys).map((k) => (
-            <th key={k.length}>{k}</th>
+            <th key={k}>{k}</th>
           ))}
           <th>Action</th>
         </tr>
       </thead>
       <tbody>
         {filteredStd.map((user) => (
-          <tr>
+          <tr key={user.id}>
             <td>{user.id}</td>
             <td>{user.name}</td>
             <td>{user.username}</td>
