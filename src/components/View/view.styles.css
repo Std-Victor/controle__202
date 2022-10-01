@@ -16,7 +16,7 @@ th {
 th,
 td {
   border-bottom: 1px solid rgb(179, 179, 179);
-  padding: 0.2em 1.2em;
+  padding: 0.2rem 1.2rem;
 }
 
 td span {
@@ -33,7 +33,11 @@ thead tr {
 
 tbody tr td:last-child {
   display: flex;
-  column-gap: 8px;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+  padding: .5em auto;
+
 }
 
 .address--field + .address--field::before {

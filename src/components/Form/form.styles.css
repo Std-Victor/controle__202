@@ -68,6 +68,7 @@ form .from__box:nth-child(5) {
   display: flex;
   justify-content: center;
   align-items: center;
+  gap: 10px;
 }
 
 .form__submit input[type="submit"] {
@@ -77,6 +78,18 @@ form .from__box:nth-child(5) {
   border-radius: 5px;
   font-size: 1.2rem;
   color: white;
+  font-weight: 900;
+  letter-spacing: 1.2px;
+  outline: none;
+}
+
+.form__submit input[type="button"] {
+  background-color: #eeeeee;
+  padding: 10px 25px;
+  border: 1px solid;
+  border-radius: 5px;
+  font-size: 1.2rem;
+  color: #000000;
   font-weight: 900;
   letter-spacing: 1.2px;
   outline: none;

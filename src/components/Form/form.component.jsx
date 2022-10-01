@@ -1,45 +1,44 @@
-import React, { useRef } from "react";
+import React from "react";
+import { useDispatch, useSelector } from "react-redux";
 import "./form.styles.css";
 
-export const Form = ({ open, onclose, getData, editStd }) => {
-  const name = useRef();
-  const username = useRef();
-  const email = useRef();
-  const street = useRef();
-  const suite = useRef();
-  const city = useRef();
-  const phone = useRef();
+import {
+  toggleModal,
+  editUser,
+  addStudent,
+} from "../../redux/student/student.actions";
+import { useState } from "react";
 
-  const data = { address: {} };
+export const Form = () => {
+  const { openModal, oldUser, lastUserId } = useSelector((state) => state);
+  const dispatch = useDispatch();
+  const [user, setUser] = useState({ address: "" });
+  if (!openModal) return null;
+  const handleChange = (e) => {
+    if (oldUser)
+      return setUser({ ...oldUser, [e.target.name]: e.target.value });
+    return setUser((prev) => ({
+      ...prev,
+      id: lastUserId,
+      [e.target.name]: e.target.value,
+    }));
+  };
 
-  const validInput = (...args) => {
-    for (const arg of args) {
-      for (const [k, v] of Object.entries(arg)) {
-        if (v.current.value.length > 0) {
-          ["street", "suite", "city"].includes(k)
-            ? (data.address[k] = v.current.value)
-            : (data[k] = v.current.value);
-        }
-      }
-    }
+  const handleAddress = (e) => {
+    if (oldUser)
+      return setUser({
+        ...oldUser,
+        address: { ...oldUser.address, [e.target.name]: e.target.value },
+      });
+
+    return setUser((prev) => ({
+      ...prev,
+      address: { ...prev.address, [e.target.name]: e.target.value },
+    }));
   };
-  if (!open) return null;
-  const sendData = (e) => {
-    e.preventDefault();
-    validInput(
-      { name },
-      { username },
-      { email },
-      { street },
-      { suite },
-      { city },
-      { phone }
-    );
-    if (Object.keys(data).length < 5) return null;
-    return getData(data);
-  };
+
   return (
-    <div className="overlay" onClick={onclose}>
+    <div className="overlay" onClick={() => dispatch(toggleModal())}>
       <div className="form__container" onClick={(e) => e.stopPropagation()}>
         <form>
           <div className="from__box">
@@ -47,11 +46,11 @@ export const Form = ({ open, onclose, getData, editStd }) => {
               Name
             </label>
             <input
+              name="name"
               type="text"
               className="input__field"
-              // onBlur={(e) => (data.name = e.target.value)}
-              ref={name}
-              defaultValue={editStd.name}
+              onChange={handleChange}
+              defaultValue={oldUser && oldUser.name}
             />
           </div>
           <div className="from__box">
@@ -59,11 +58,11 @@ export const Form = ({ open, onclose, getData, editStd }) => {
               Username
             </label>
             <input
+              name="username"
               type="text"
               className="input__field"
-              // onBlur={(e) => (data.username = e.target.value)}
-              ref={username}
-              defaultValue={editStd.username}
+              onChange={handleChange}
+              defaultValue={oldUser && oldUser.username}
             />
           </div>
           <div className="from__box">
@@ -71,11 +70,11 @@ export const Form = ({ open, onclose, getData, editStd }) => {
               Email
             </label>
             <input
+              name="email"
               type="email"
               className="input__field"
-              // onBlur={(e) => (data.email = e.target.value)}
-              ref={email}
-              defaultValue={editStd.email}
+              onChange={handleChange}
+              defaultValue={oldUser && oldUser.email}
             />
           </div>
           <div className="from__box">
@@ -85,11 +84,11 @@ export const Form = ({ open, onclose, getData, editStd }) => {
                 Street
               </label>
               <input
+                name="street"
                 type="text"
                 className="input__field"
-                // onBlur={(e) => (data.address.street = e.target.value)}
-                ref={street}
-                defaultValue={editStd && editStd.address.street}
+                onChange={handleAddress}
+                defaultValue={oldUser && oldUser.address.street}
               />
             </div>
             <div className="address__part">
@@ -97,11 +96,11 @@ export const Form = ({ open, onclose, getData, editStd }) => {
                 Suite
               </label>
               <input
+                name="suite"
                 type="text"
                 className="input__field"
-                // onBlur={(e) => (data.address.suite = e.target.value)}
-                ref={suite}
-                defaultValue={editStd && editStd.address.suite}
+                onChange={handleAddress}
+                defaultValue={oldUser && oldUser.address.suite}
               />
             </div>
             <div className="address__part">
@@ -109,11 +108,11 @@ export const Form = ({ open, onclose, getData, editStd }) => {
                 City
               </label>
               <input
+                name="city"
                 type="text"
                 className="input__field"
-                // onBlur={(e) => (data.address.city = e.target.value)}
-                ref={city}
-                defaultValue={editStd && editStd.address.city}
+                onChange={handleAddress}
+                defaultValue={oldUser && oldUser.address.city}
               />
             </div>
           </div>
@@ -122,19 +121,44 @@ export const Form = ({ open, onclose, getData, editStd }) => {
               Phone
             </label>
             <input
+              name="phone"
               type="phone"
               className="input__field"
-              // onBlur={(e) => (data.phone = e.target.value)}
-              ref={phone}
-              defaultValue={editStd.phone}
+              onChange={handleChange}
+              defaultValue={oldUser && oldUser.phone}
             />
           </div>
           <div className="form__submit">
-            <input
-              type="submit"
-              value={editStd ? "Edit" : "Add"}
-              onClick={sendData}
-            />
+            {oldUser ? (
+              <div className="form__submit">
+                <input
+                  type="submit"
+                  value="Edit"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    return dispatch(editUser(user));
+                  }}
+                />
+                <input
+                  type="button"
+                  value="Annuler"
+                  onClick={() => dispatch(toggleModal())}
+                />
+              </div>
+            ) : (
+              <input
+                type="submit"
+                value="Add"
+                onClick={(e) => {
+                  e.preventDefault();
+                  if (
+                    Object.keys(user).length >= 6 &&
+                    Object.keys(user.address).length >= 3
+                  )
+                    return (dispatch(addStudent(user)), setUser({ address: "" }));
+                }}
+              />
+            )}
           </div>
         </form>
       </div>

@@ -3,6 +3,10 @@
 #exta
 /README.md
 /.idea
+/src/components/Counter
+/src/redux/store.Counter.js
+/src/redux/root-reducer.js
+/src/assets
 
 # dependencies
 /node_modules

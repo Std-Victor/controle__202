@@ -1,11 +1,19 @@
 import React from "react";
+import { useDispatch, useSelector } from "react-redux";
+
 import "./view.styles.css";
 
-export const View = ({ filteredStd, editById, removeById }) => {
-  let keys = [];
-  if (filteredStd.length > 0) keys = filteredStd[0];
-  const { id, name, username, email, address, phone } = keys;
-  keys = { id, name, username, email, address, phone };
+import {
+  getOldUserData,
+  getRemovedId,
+} from "../../redux/student/student.actions";
+
+export const View = () => {
+  const students = useSelector((state) => state.students);
+  const dispatch = useDispatch();
+  if (!students || students.length === 0) return null;
+  const { id, name, username, email, address, phone } = students[0];
+  const keys = { id, name, username, email, address, phone };
   const handleAddress = (ads) => {
     const { street, suite, city } = ads;
     return (ads = { street, suite, city });
@@ -21,7 +29,7 @@ export const View = ({ filteredStd, editById, removeById }) => {
         </tr>
       </thead>
       <tbody>
-        {filteredStd.map((user) => (
+        {students.map((user) => (
           <tr key={user.id}>
             <td>{user.id}</td>
             <td>{user.name}</td>
@@ -30,20 +38,21 @@ export const View = ({ filteredStd, editById, removeById }) => {
             <td>
               {Object.entries(handleAddress(user.address)).map(([k, v]) => (
                 <span className="address--field" key={k}>
-                  {/* <span className="address--title">{k}</span> */}
-                  {/* <span className="address--content">{v}</span> */}
                   {v}
                 </span>
               ))}
             </td>
             <td>{user.phone}</td>
             <td>
-              <button className="btn__edit" onClick={() => editById(user)}>
+              <button
+                className="btn__edit"
+                onClick={() => dispatch(getOldUserData(user))}
+              >
                 <i className="fa-solid fa-pen-to-square"></i>
               </button>
               <button
                 className="btn__remove"
-                onClick={() => removeById(user.id)}
+                onClick={() => dispatch(getRemovedId(user.id))}
               >
                 <i className="fa-solid fa-eraser"></i>
               </button>
