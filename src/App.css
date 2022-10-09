@@ -1,25 +1,10 @@
-@import url("https://fonts.googleapis.com/css2?family=Elsie:wght@900&family=Poppins&display=swap");
-
-.App {
+.App{
   display: flex;
   flex-direction: column;
+  justify-content: center;
   align-items: center;
-  font-family: "Poppins", sans-serif;
-  padding: 3.5rem 0;
-}
-
-h1 {
-  font-family: "Elsie", cursive;
-  font-size: 3.4rem;
-  margin-bottom: 1.5rem;
-}
-
-.table--up {
-  display: flex;
-  column-gap: 1rem;
-  margin-bottom: 1.8rem;
-}
-
-.btn__add {
-  background-color: #19a548;
+  padding: 5rem 0;
+  gap: 3rem;
+  width: 65rem;
+  margin: 0 auto;
 }

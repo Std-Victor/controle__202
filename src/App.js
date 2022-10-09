@@ -1,43 +1,54 @@
 import React, { Component } from "react";
+import { act } from "react-dom/test-utils";
+
 import "./App.css";
-import { SearchBox } from "./components/Search-box/search-box.component";
-import { View } from "./components/View/view.component";
-import { Form } from "./components/Form/form.component";
-import { fetchData, toggleModal } from "./redux/student/student.actions";
-import { connect } from "react-redux";
+import { Activite } from "./components/Activite/Activite";
+import { Detail } from "./components/Detail/Detail";
 
-
-class App extends Component {
-  componentDidMount() {
-    fetch("https://jsonplaceholder.typicode.com/users")
-      .then((response) => response.json())
-      .then((json) => this.props.fetchData(json));
+export default class App extends Component {
+  constructor() {
+    super();
+    this.state = {
+      listeActivite: [
+        {
+          id: 1,
+          name: "Raquettes à neige",
+          prix: 300,
+          selectionné: false,
+          img: "https://cdn-icons-png.flaticon.com/512/2200/2200326.png",
+        },
+        {
+          id: 2,
+          name: "detente et bien etre",
+          prix: 400,
+          selectionné: false,
+          img: "https://cdn-icons-png.flaticon.com/512/2248/2248315.png",
+        },
+        {
+          id: 3,
+          name: "patrimoine et culture",
+          prix: 250,
+          selectionné: false,
+          img: "https://cdn-icons-png.flaticon.com/512/2028/2028382.png",
+        },
+        {
+          id: 4,
+          name: "séjour en famille ",
+          prix: 660,
+          selectionné: false,
+          img: "https://cdn-icons-png.flaticon.com/512/3020/3020920.png",
+        },
+      ],
+      activiteSelectionne: [],
+    };
   }
-
+  getActivite = (data) => this.setState({activiteSelectionne: data})
   render() {
     return (
       <div className="App">
-        <h1>Students List</h1>
-        <div className="table--up">
-          {this.props.dataFetched ? <SearchBox /> : null}
-          <button className="btn__add" onClick={() => this.props.toggleModal()}>
-            <i className="fa-solid fa-user-plus"></i>
-          </button>
-        </div>
-        <View />
-        <Form />
+        <Activite listeActivite={this.state.listeActivite} getActivite={this.getActivite} />
+        <Detail activiteSelectionne={this.state.activiteSelectionne} />
       </div>
     );
   }
 }
-
-const mapStateToProps = state => ({
-  dataFetched : state.dataFetched
-})
-
-const mapDispatchToProps = (dispatch) => ({
-  fetchData: (data) => dispatch(fetchData(data)),
-  toggleModal: () => dispatch(toggleModal()),
-});
-
-export default connect(mapStateToProps,mapDispatchToProps)(App);

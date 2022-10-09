@@ -1,0 +1,63 @@
+.container{
+  width: 100%;
+  display: grid;
+  gap: 1rem;
+}
+.container img{
+  width: 6rem;
+  height: 6rem;
+  border-radius: 50%;
+  border: .2rem solid white;
+  box-shadow: .2rem .5rem .9rem #00000049;
+}
+.container h2{
+  font-family: calibri;
+  font-weight: 400;
+}
+
+.container table{
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.container td, th{
+  padding: 1rem;
+  text-align: center;
+  background-color: #75cbfd;
+  border-bottom: 1px solid #6ab8e6;
+}
+
+.container td:nth-child(2){
+  width: 12rem;
+  text-align: start;
+}
+
+.container table tbody tr td input{
+  padding: .3rem 0 .3rem .8rem;
+  border: none;
+  outline: none;
+}
+
+.container table tbody tr td button{
+  padding: .8rem 1.8rem;
+  color: white;
+  background-color: red;
+  border: none;
+  border-radius: .3rem;
+  font-size: 1.5rem;
+  box-shadow: .2rem .2rem .9rem #00000049;
+  cursor: pointer;
+}
+
+.container table tbody tr td button:hover{
+  background-color: black;
+  color: white;
+}
+
+.total p{
+  padding: .8rem 5rem;
+  width: max-content;
+  border-radius: .3rem;
+  color: white;
+  background-color: #2b55dd;
+}
