@@ -3,10 +3,18 @@ import React, { useEffect, useState } from "react";
 import style from "./detail.module.css";
 
 export const Detail = ({ activiteSelectionne }) => {
-  const [total, setTotal] = useState(0);
+  const [total, setTotal] = useState();
   const [listActivite, setListActivite] = useState([]);
   useEffect(
-    () => setListActivite(() => [...activiteSelectionne]),
+    () => (
+      setListActivite(() => [...activiteSelectionne]),
+      setTotal({
+        ...activiteSelectionne.reduce(
+          (obj, item) => ({ ...obj, [item.id]: item.prix }),
+          {}
+        ),
+      })
+    ),
     [activiteSelectionne]
   );
   const handelChange = (e) =>
@@ -27,8 +35,6 @@ export const Detail = ({ activiteSelectionne }) => {
         .reduce((obj, item) => ({ ...obj, [item]: total[item] }), {}),
     })
   );
-  console.clear();
-  console.log(total);
   return (
     <div className={style.container}>
       <h2>Votre Choix</h2>
@@ -57,6 +63,7 @@ export const Detail = ({ activiteSelectionne }) => {
                   name={act.id}
                   min={0}
                   id=""
+                  defaultValue={1}
                 />
               </td>
               <td>
@@ -68,8 +75,10 @@ export const Detail = ({ activiteSelectionne }) => {
       </table>
       <div className={style.total}>
         <p>
-          Total :{" "}
-          {Object.values(total).reduce((total, prix) => total + prix, 0)}
+          Total :
+          {!total
+            ? listActivite.reduce((total, item) => total + item.prix, 0)
+            : Object.values(total).reduce((total, prix) => total + prix, 0)}
         </p>
       </div>
     </div>
