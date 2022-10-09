@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import style from "./detail.module.css";
 
 export const Detail = ({ activiteSelectionne }) => {
-  const [total, setTotal] = useState();
+  const [total, setTotal] = useState({});
   const [listActivite, setListActivite] = useState([]);
   useEffect(
     () => (
@@ -76,9 +76,7 @@ export const Detail = ({ activiteSelectionne }) => {
       <div className={style.total}>
         <p>
           Total :
-          {!total
-            ? listActivite.reduce((total, item) => total + item.prix, 0)
-            : Object.values(total).reduce((total, prix) => total + prix, 0)}
+          {Object.values(total).reduce((total, prix) => total + prix, 0)}
         </p>
       </div>
     </div>
