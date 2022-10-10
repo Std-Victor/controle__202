@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 
 import style from "./detail.module.css";
 
-export const Detail = ({ activiteSelectionne }) => {
+export const Detail = ({ activiteSelectionne, getRemovedActivite }) => {
   const [total, setTotal] = useState({});
   const [listActivite, setListActivite] = useState([]);
   useEffect(
@@ -33,7 +33,8 @@ export const Detail = ({ activiteSelectionne }) => {
       ...Object.keys(total)
         .filter((item) => +item !== id)
         .reduce((obj, item) => ({ ...obj, [item]: total[item] }), {}),
-    })
+    }),
+    getRemovedActivite(...listActivite.filter((act) => act.id === id))
   );
   return (
     <div className={style.container}>
@@ -75,8 +76,7 @@ export const Detail = ({ activiteSelectionne }) => {
       </table>
       <div className={style.total}>
         <p>
-          Total :
-          {Object.values(total).reduce((total, prix) => total + prix, 0)}
+          Total :{Object.values(total).reduce((total, prix) => total + prix, 0)}
         </p>
       </div>
     </div>

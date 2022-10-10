@@ -40,14 +40,29 @@ export default class App extends Component {
         },
       ],
       activiteSelectionne: [],
+      activiteRemoved: [],
     };
   }
-  getActivite = (data) => this.setState({activiteSelectionne: data})
+  getActivite = (data) => this.setState({ activiteSelectionne: data });
+  getRemovedActivite = (data) =>
+    this.setState({
+      activiteRemoved: [
+        ...this.state.activiteRemoved,
+        { ...data, selectionné: false },
+      ],
+    });
   render() {
     return (
       <div className="App">
-        <Activite listeActivite={this.state.listeActivite} getActivite={this.getActivite} />
-        <Detail activiteSelectionne={this.state.activiteSelectionne} />
+        <Activite
+          listeActivite={this.state.listeActivite}
+          activiteRemoved={this.state.activiteRemoved}
+          getActivite={this.getActivite}
+        />
+        <Detail
+          activiteSelectionne={this.state.activiteSelectionne}
+          getRemovedActivite={this.getRemovedActivite}
+        />
       </div>
     );
   }

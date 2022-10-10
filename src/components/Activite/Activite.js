@@ -2,10 +2,28 @@ import React, { useEffect, useState } from "react";
 
 import style from "./activite.module.css";
 
-export const Activite = ({ listeActivite, getActivite }) => {
+export const Activite = ({ listeActivite, getActivite, activiteRemoved }) => {
   const [activiteDesponible, setActiviteDesponibles] = useState([]);
   const [activiteSelectionne, setActiviteSelectionne] = useState([]);
-  useEffect(() => setActiviteDesponibles(listeActivite), []);
+  useEffect(
+    () => (
+      setActiviteDesponibles(
+        activiteRemoved.length
+          ? [
+              ...listeActivite.filter((act) =>
+                [...activiteRemoved.map((act) => act.id)].includes(act.id)
+              ),
+            ]
+          : listeActivite
+      ),
+      setActiviteSelectionne([
+        ...activiteSelectionne.filter(
+          (act) => ![...activiteRemoved.map((act) => act.id)].includes(act.id)
+        ),
+      ])
+    ),
+    [activiteRemoved]
+  );
   const handelClick = (act) =>
     activiteDesponible.includes(act)
       ? setActiviteDesponibles([
